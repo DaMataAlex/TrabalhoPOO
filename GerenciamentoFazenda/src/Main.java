@@ -3,18 +3,9 @@ import Animais.*;
 import Pessoas.Peao;
 import Pessoas.Pessoa;
 import Pessoas.Veterinario;
-<<<<<<< HEAD
 import model.Fazenda;
 import excecoes.DadoInvalidoException;
 import utils.GerenciadorArquivo;
-=======
-import model.CentroDeProducao;
-import model.ProdutorLa;
-import model.ProdutorLeite;
-
-import java.util.ArrayList;
-import java.util.List;
->>>>>>> c03e88763eeb2eba4fcebfe7e2f5c849d631f715
 
 public class Main {
     public static void main(String[] args) {
