@@ -1,38 +1,57 @@
+// === FILE: src/Main.java ===
 import Animais.*;
 import Pessoas.Peao;
 import Pessoas.Pessoa;
 import Pessoas.Veterinario;
-import model.CentroDeProducao;
-
-import java.util.ArrayList;
-import java.util.List;
+import model.Fazenda;
+import excecoes.DadoInvalidoException;
+import utils.GerenciadorArquivo;
 
 public class Main {
     public static void main(String[] args) {
 
-        List<Pessoa> funcionarios = new ArrayList<>();
-        funcionarios.add(new Peao("João", "123.456.789-00", "01/01/1980", "(99) 99999-9999", 2000.0, "Setor A"));
-        funcionarios.add(new Veterinario("Dra. Ana", "987.654.321-00", "10/05/1975", "(88) 88888-8888", 5000.0, "CRMV-123"));
+        // 1. CARREGAR DADOS DA FAZENDA
+        System.out.println("Iniciando sistema e buscando dados salvos...");
+        Fazenda minhaFazenda = GerenciadorArquivo.carregar();
 
+        // 2. CADASTRO INICIAL (Só acontece se o arquivo de dados estiver vazio)
+        if (minhaFazenda.getAnimais().isEmpty()) {
+            try {
+                System.out.println("Nenhum dado encontrado. Realizando cadastro inicial...");
 
-        List<Animal> fazendaAnimais = new ArrayList<>();
-        CentroDeProducao centro = new CentroDeProducao();
+                // Cadastrando funcionários
+                minhaFazenda.adicionarFuncionario(new Peao("João", "123.456.789-00", "01/01/1980", "(99) 99999-9999", 2000.0, "Setor A"));
+                minhaFazenda.adicionarFuncionario(new Veterinario("Dra. Ana", "987.654.321-00", "10/05/1975", "(88) 88888-8888", 5000.0, "CRMV-123"));
 
-        fazendaAnimais.add(new Bovino("BOV-01", 350.0, 24, 15.5));
-        fazendaAnimais.add(new Bovino("BOV-02", 328.0, 21, 18.5));
-        fazendaAnimais.add(new Ovino("OV-01", 55.0, 12, 3.2));
-        fazendaAnimais.add(new Ovino("OV-02", 75.0, 13, 2.9));
-        fazendaAnimais.add(new Suino("SUI-01", 110.0, 8));
-        fazendaAnimais.add(new Ave("AVE-01", 2.5, 4));
+                // Cadastrando animais
+                minhaFazenda.adicionarAnimal(new Bovino("BOV-01", 350.0, 28, 31));
+                minhaFazenda.adicionarAnimal(new Bovino("BOV-02", 328.0, 26, 28));
+                minhaFazenda.adicionarAnimal(new Ovino("OV-01", 55.0, 12, 3.2));
+                minhaFazenda.adicionarAnimal(new Ovino("OV-02", 75.0, 13, 2.9));
+                minhaFazenda.adicionarAnimal(new Suino("SUI-01", 160, 8));
+                minhaFazenda.adicionarAnimal(new Ave("AVE-01", 2.0, 4, 1));
+
+                System.out.println("Cadastro inicial realizado com sucesso!\n");
+
+            } catch (DadoInvalidoException e) {
+                // Captura e exibe o erro caso alguma regra de negócio falhe
+                System.err.println("ERRO DE VALIDAÇÃO: " + e.getMessage());
+                return; // Encerra a execução caso ocorra um erro crítico no cadastro
+            }
+        } else {
+            System.out.println("Dados carregados com sucesso! Temos " + minhaFazenda.getAnimais().size() + " animais e " + minhaFazenda.getFuncionarios().size() + " funcionários na fazenda.\n");
+        }
 
         System.out.println("=== ROTINA DIÁRIA DA FAZENDA ===");
 
-        Pessoa responsavel = funcionarios.get(0);
+        if (!minhaFazenda.getFuncionarios().isEmpty()) {
+            Pessoa responsavel = minhaFazenda.getFuncionarios().get(0);
+            System.out.println("\nFuncionário em serviço: " + responsavel.getNome());
+            System.out.println("Função: " + responsavel.desempenharFuncao());
+        }
 
-        System.out.println("\nFuncionário em serviço: " + responsavel.getNome());
-        System.out.println("Função: " + responsavel.desempenharFuncao());
-
-        for (Animal animal : fazendaAnimais) {
+        // Iterando sobre a lista de animais gerenciada pela Fazenda
+        for (Animal animal : minhaFazenda.getAnimais()) {
             System.out.println("\n[ID: " + animal.getId() + "]");
             System.out.println("Som: " + animal.emitirSom());
             System.out.println("Custo diário de alimentação: R$ " + animal.calcularCustoAlimentacaoDiario());
@@ -41,18 +60,37 @@ public class Main {
                 model.ProdutorLeite produtor = (model.ProdutorLeite) animal;
                 double leite = produtor.coletarLeite();
                 System.out.println("Produção de leite coletada: " + leite + " litros");
-                centro.adicionarLeiteTotal(leite);
+                minhaFazenda.getCentroDeProducao().adicionarLeiteTotal(leite);
             }
 
             if (animal instanceof model.ProdutorLa) {
                 model.ProdutorLa produtor = (model.ProdutorLa) animal;
                 double la = produtor.tosarLa();
                 System.out.println("Lã extraída na tosa: " + la + " kg");
-                centro.adicionarLaTotal(la);
+                minhaFazenda.getCentroDeProducao().adicionarLaTotal(la);
+            }
+            if (animal instanceof model.ProdutorOvos) {
+                model.ProdutorOvos produtor = (model.ProdutorOvos) animal;
+                int ovos = produtor.coletarOvos();
+                System.out.println("Ovos coletados: " + ovos + " unidades");
+                minhaFazenda.getCentroDeProducao().adicionarOvosTotal(ovos);
+            }
+            if (animal instanceof model.Comercializavel) {
+                model.Comercializavel comercializavel = (model.Comercializavel) animal;
+                double valorVivo = comercializavel.calcularValorVenda(false);
+                double valorAbatido = comercializavel.calcularValorVenda(true);
+
+                System.out.println("Cotação para venda VIVO: R$ " + String.format("%.2f", valorVivo));
+                System.out.println("Cotação para venda ABATIDO: R$ " + String.format("%.2f", valorAbatido));
             }
         }
+
         System.out.println("\n=== RESUMO FINAL DA PRODUÇÃO ===");
-        System.out.println("Total de leite na fazenda: " + centro.getTotalLeiteAcumulado() + " litros");
-        System.out.println("Total de lã na fazenda: " + centro.getTotalLaAcumulado() + " kg");
+        System.out.println("Total de leite na fazenda: " + minhaFazenda.getCentroDeProducao().getTotalLeiteAcumulado() + " litros");
+        System.out.println("Total de lã na fazenda: " + minhaFazenda.getCentroDeProducao().getTotalLaAcumulado() + " kg");
+        System.out.println("Total de ovos na fazenda: " + minhaFazenda.getCentroDeProducao().getTotalOvosAcumulados() + " unidades");
+        
+
+        GerenciadorArquivo.salvar(minhaFazenda);
     }
 }

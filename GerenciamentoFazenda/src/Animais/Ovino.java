@@ -16,7 +16,7 @@ public class Ovino extends Animal implements model.ProdutorLa {
 
     @Override
     public double calcularCustoAlimentacaoDiario() {
-        return 4.50;
+        return 2.50;
     }
 
     @Override
