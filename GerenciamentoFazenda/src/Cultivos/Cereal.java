@@ -2,7 +2,7 @@ package Cultivos;
 
 public class Cereal extends Cultivo {
 
-    private String tipoGrao; // ex: "Milho", "Soja"
+    private String tipoGrao;
 
     public Cereal(String id, double areaPlantada, String dataPlantio, String tipoGrao) {
         super(id, areaPlantada, dataPlantio);
@@ -11,7 +11,7 @@ public class Cereal extends Cultivo {
 
     @Override
     public double calcularRendimento() {
-        return getAreaPlantada() * 3500; // kg por hectare, média de grãos
+        return getAreaPlantada() * 3500;
     }
 
     @Override

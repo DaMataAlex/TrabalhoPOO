@@ -2,7 +2,7 @@ package Cultivos;
 
 public class Fruta extends Cultivo {
 
-    private boolean perene; // true = colhe várias vezes sem replantar
+    private boolean perene;
 
     public Fruta(String id, double areaPlantada, String dataPlantio, boolean perene) {
         super(id, areaPlantada, dataPlantio);
@@ -11,7 +11,7 @@ public class Fruta extends Cultivo {
 
     @Override
     public double calcularRendimento() {
-        return getAreaPlantada() * 12000; // kg por hectare
+        return getAreaPlantada() * 12000;
     }
 
     @Override
