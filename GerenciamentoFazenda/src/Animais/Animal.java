@@ -16,7 +16,8 @@ public abstract class Animal implements Serializable {
     }
 
     public abstract String emitirSom();
-    public abstract double calcularCustoAlimentacaoDiario();
+    public abstract double calcularCustoAlimentacao();
+    // -----------------------------------------
 
     public String getId() {
         return id;
