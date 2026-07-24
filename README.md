@@ -1,7 +1,4 @@
-Trabalho Final da disciplina de POO.\n\n
+Trabalho Final da disciplina de POO.
 
-Grupo: \n 
-Alex Ribeiro da Mata \n
-Andressa Ferreira Marques \n
-Caio Machado Barbosa\n 
-Lara Machado Barbosa
+Grupo: 
+Alex Ribeiro da Mata, Andressa Ferreira Marques, Caio Machado Barbosa e Lara Machado Barbosa
