@@ -31,8 +31,7 @@ public class Fazenda implements Serializable {
         this.centroDeProducao = new CentroDeProducao();
     }
 
-    // ==================== ADICIONAR ====================
-
+    //ADICIONAR
     public void adicionarFuncionario(Pessoa pessoa) throws DadoInvalidoException {
         if (pessoa.getSalario() < 0) {
             throw new DadoInvalidoException("Salário de " + pessoa.getNome() + " não pode ser negativo!");
@@ -63,8 +62,7 @@ public class Fazenda implements Serializable {
         cultivos.add(cultivo);
     }
 
-    // ==================== BUSCAR E REMOVER ====================
-
+    //BUSCAR E REMOVER
     public Animal buscarAnimal(String id) throws AnimalNaoEncontradoException {
         for (Animal a : animais) {
             if (a.getId().equalsIgnoreCase(id)) {
@@ -79,8 +77,7 @@ public class Fazenda implements Serializable {
         animais.remove(animal);
     }
 
-    // ==================== ROTINA DIÁRIA ====================
-
+    //ROTINA DIÁRIA
     public String executarRotinaDiaria() {
         StringBuilder sb = new StringBuilder();
         double custoTotal = 0.0;
@@ -97,7 +94,7 @@ public class Fazenda implements Serializable {
         }
         sb.append("Custo total de alimentação: R$ ").append(String.format("%.2f", custoTotal)).append("\n");
 
-        // Coleta
+        //Coleta
         sb.append("\n--- COLETA ---\n");
         for (Animal a : animais) {
             if (a instanceof Bovino b) {
@@ -125,8 +122,7 @@ public class Fazenda implements Serializable {
         return sb.toString();
     }
 
-    // ==================== VENDA ====================
-
+    //VENDA
     public double venderAnimal(String id, boolean abatido)
             throws AnimalNaoEncontradoException, AnimalNaoComercializavelException, DadoInvalidoException {
 
@@ -144,8 +140,7 @@ public class Fazenda implements Serializable {
         return valor;
     }
 
-    // ==================== RELATÓRIOS ====================
-
+    //RELATÓRIOS
     public String getRelatorioCompleto() {
         StringBuilder sb = new StringBuilder();
         sb.append("=== RELATÓRIO COMPLETO DA FAZENDA ===\n\n");
@@ -200,8 +195,7 @@ public class Fazenda implements Serializable {
         return sb.toString();
     }
 
-    // ==================== GETTERS ====================
-
+    //GETTERS
     public List<Pessoa> getFuncionarios() { return funcionarios; }
     public List<Animal> getAnimais() { return animais; }
     public List<Cultivo> getCultivos() { return cultivos; }

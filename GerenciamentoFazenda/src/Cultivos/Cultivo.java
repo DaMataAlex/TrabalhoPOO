@@ -6,7 +6,7 @@ public abstract class Cultivo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
-    private double areaPlantada; // em hectares
+    private double areaPlantada;
     private String dataPlantio;
 
     public Cultivo(String id, double areaPlantada, String dataPlantio) {

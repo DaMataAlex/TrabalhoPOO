@@ -20,7 +20,7 @@ public class Suino extends Animal implements Comercializavel {
 
     @Override
     public double calcularValorVenda(boolean abatido) {
-        // Se abatido, R$ 6.00 por Kg. Se vivo, R$ 8.50 por Kg.
+
         if (abatido) {
             return getPeso() * 6.00;
         } else {

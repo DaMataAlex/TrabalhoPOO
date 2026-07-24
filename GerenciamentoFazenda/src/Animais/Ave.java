@@ -30,7 +30,7 @@ public class Ave extends Animal implements ProdutorOvos, Comercializavel {
 
     @Override
     public double calcularValorVenda(boolean abatido) {
-        // Se abatida, R$ 7.50 por Kg. Se viva, R$ 5.50 por Kg.
+
         if (abatido) {
             return getPeso() * 7.50;
         } else {
